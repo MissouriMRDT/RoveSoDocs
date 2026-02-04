@@ -1,0 +1,140 @@
+name: Build & Deploy Docs Hub
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  actions: read
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the hub repo (this repo)
+      - name: Checkout docs hub
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      # -------------------------
+      # Build RoveSoSimulator (Jekyll)
+      # -------------------------
+      - name: Checkout RoveSoSimulator (Jekyll)
+        uses: actions/checkout@v4
+        with:
+          repository: MissouriMRDT/RoveSoSimulator
+          ref: github-pages
+          path: src/RoveSoSimulator
+          fetch-depth: 1
+          # If any repo is private, set DOCS_BOT_TOKEN in the hub repo secrets
+          token: ${{ secrets.DOCS_BOT_TOKEN || github.token }}
+
+      - name: Setup Ruby (for Jekyll)
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+          working-directory: src/RoveSoSimulator
+
+      - name: Build RoveSoSimulator site
+        working-directory: src/RoveSoSimulator
+        env:
+          JEKYLL_ENV: production
+        run: |
+          # Build into the hub dist folder under /RoveSoSimulator
+          bundle exec jekyll build \
+            --baseurl "/RoveSoSimulator" \
+            -d "../../dist/RoveSoSimulator"
+
+      # -------------------------
+      # Build Autonomy_Software (Doxygen)
+      # -------------------------
+      - name: Checkout Autonomy_Software (Doxygen)
+        uses: actions/checkout@v4
+        with:
+          repository: MissouriMRDT/Autonomy_Software
+          path: src/Autonomy_Software
+          fetch-depth: 1
+          submodules: recursive
+          token: ${{ secrets.DOCS_BOT_TOKEN || github.token }}
+
+      - name: Install Doxygen + Graphviz
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz rsync
+
+      - name: Run Doxygen
+        working-directory: src/Autonomy_Software
+        run: |
+          doxygen ./Doxyfile
+
+      - name: Stage Autonomy docs into hub dist
+        run: |
+          set -euo pipefail
+          mkdir -p dist/autonomy
+
+          # Adjust these if your Doxygen output path differs:
+          if [ -d "src/Autonomy_Software/docs/Doxygen/html" ]; then
+            rsync -a "src/Autonomy_Software/docs/Doxygen/html/" "dist/autonomy/"
+          elif [ -d "src/Autonomy_Software/docs/Doxygen" ]; then
+            rsync -a "src/Autonomy_Software/docs/Doxygen/" "dist/autonomy/"
+          elif [ -d "src/Autonomy_Software/html" ]; then
+            rsync -a "src/Autonomy_Software/html/" "dist/autonomy/"
+          else
+            echo "ERROR: Could not find Doxygen HTML output folder."
+            exit 1
+          fi
+
+      # -------------------------
+      # Root landing page + safety
+      # -------------------------
+      - name: Create landing page
+        run: |
+          mkdir -p dist
+          cat > dist/index.html <<'HTML'
+          <!doctype html>
+          <html>
+          <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width,initial-scale=1" />
+            <title>MRDT Docs</title>
+          </head>
+          <body>
+            <h1>MRDT Docs</h1>
+            <ul>
+              <li><a href="./RoveSoSimulator/">RoveSoSimulator</a></li>
+              <li><a href="./autonomy/">Autonomy Software</a></li>
+            </ul>
+          </body>
+          </html>
+          HTML
+
+      - name: Disable Jekyll processing for the published site
+        run: |
+          touch dist/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
