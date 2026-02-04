@@ -50,8 +50,9 @@ jobs:
         working-directory: src/RoveSoSimulator
         env:
           JEKYLL_ENV: production
+          PAGES_REPO_NWO: MissouriMRDT/RoveSoSimulator
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.DOCS_BOT_TOKEN || github.token }}
         run: |
-          # Build into the hub dist folder under /RoveSoSimulator
           bundle exec jekyll build \
             --baseurl "/RoveSoSimulator" \
             -d "../../dist/RoveSoSimulator"
