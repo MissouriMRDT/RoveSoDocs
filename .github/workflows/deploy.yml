@@ -19,7 +19,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the hub repo (this repo)
       - name: Checkout docs hub
         uses: actions/checkout@v4
 
@@ -36,15 +35,34 @@ jobs:
           ref: e20696d702b584dd37009a59641662113fbffa19
           path: src/RoveSoSimulator
           fetch-depth: 1
-          # If any repo is private, set DOCS_BOT_TOKEN in the hub repo secrets
           token: ${{ secrets.DOCS_BOT_TOKEN || github.token }}
 
-      - name: Setup Ruby (for Jekyll)
+      - name: Setup Ruby (for Jekyll) - no cache
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.2"
           bundler-cache: false
           working-directory: src/RoveSoSimulator
+
+      - name: Install gems (fresh, no cache)
+        working-directory: src/RoveSoSimulator
+        env:
+          BUNDLE_WITHOUT: "development:test"
+        run: |
+          set -euo pipefail
+
+          # Ensure nothing from a previous run is reused
+          rm -rf .bundle vendor/bundle Gemfile.lock
+
+          gem --version
+          bundler --version || gem install bundler
+
+          # Force a clean, local install each run (no shared cache)
+          bundle config set --local path 'vendor/bundle'
+          bundle config set --local clean 'true'
+          bundle config set --local without 'development:test'
+
+          bundle install --jobs 4 --retry 3
 
       - name: Build RoveSoSimulator site
         working-directory: src/RoveSoSimulator
@@ -55,7 +73,7 @@ jobs:
         run: |
           bundle exec jekyll build \
             --baseurl "/RoveSoSimulator" \
-            -d "../../dist/RoveSoSimulator"
+            -d "$GITHUB_WORKSPACE/dist/RoveSoSimulator"
 
       # -------------------------
       # Build Autonomy_Software (Doxygen)
@@ -84,7 +102,6 @@ jobs:
           set -euo pipefail
           mkdir -p dist/autonomy
 
-          # Adjust these if your Doxygen output path differs:
           if [ -d "src/Autonomy_Software/docs/Doxygen/html" ]; then
             rsync -a "src/Autonomy_Software/docs/Doxygen/html/" "dist/autonomy/"
           elif [ -d "src/Autonomy_Software/docs/Doxygen" ]; then
