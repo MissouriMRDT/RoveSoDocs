@@ -16,13 +16,13 @@ features:
   - icon: "🛰️"
     title: "RoveSoSimulator"
     details: "Unreal Engine 5 simulation environment for MRDT—testing with realistic scenarios, sensors, and repeatable runs."
-    link: /RoveSoSimulator/
+    link: https://docs.themrdt.org/RoveSoSimulator/
     linkText: "Open Simulator Docs"
 
   - icon: "🤖"
     title: "Autonomy Software"
     details: "C++ rover autonomy stack—setup, architecture, perception + navigation notes, and testing workflows for competition readiness."
-    link: /autonomy/
+    link: https://docs.themrdt.org/autonomy/
     linkText: "Open Autonomy Docs"
 ---
 

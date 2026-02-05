@@ -41,6 +41,7 @@ jobs:
           npm run docs:build
           mkdir -p dist
           rsync -a .vitepress/dist/ dist/
+          rsync -a logo.png dist/
 
       # -------------------------
       # Build RoveSoSimulator (Jekyll)
