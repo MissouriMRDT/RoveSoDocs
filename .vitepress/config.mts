@@ -4,13 +4,13 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   lang: 'en-US',
   title: "RoveSoDocs",
-  description: "Documentation hub for the Missouri S&T Mars Rover Design Team",
+  description: "Documentation Hub for the Missouri S&T Mars Rover Design Team",
 
   // --- Head Array for SEO, Favicons, and Theming ---
   head: [
     ['meta', { charset: 'utf-8' }],
     ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1' }],
-    ['meta', { name: 'description', content: 'Documentation hub for the Missouri S&T Mars Rover Design Team' }],
+    ['meta', { name: 'description', content: 'Documentation Hub for the Missouri S&T Mars Rover Design Team' }],
     ['meta', { name: 'theme-color', content: '#A50303' }], // Example: Using a deep red/maroon for MRDT
     
     // Favicons - ensure these files exist in your `docs/public` directory

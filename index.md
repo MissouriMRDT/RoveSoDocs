@@ -2,7 +2,7 @@
 layout: home
 
 title: RoveSoDocs
-titleTemplate: Vite & Vue Powered Static Site Generator
+titleTemplate: Documentation Hub for the Missouri S&T Mars Rover Design Team
 
 hero:
   name: RoveSoDocs
