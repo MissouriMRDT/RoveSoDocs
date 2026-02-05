@@ -2,7 +2,7 @@ name: Build & Deploy Docs Hub
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "development" ]
   workflow_dispatch:
 
 permissions:

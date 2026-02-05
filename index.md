@@ -2,7 +2,7 @@
 layout: home
 
 title: RoveSoDocs
-titleTemplate: Documentation Hub for the Missouri S&T Mars Rover Design Team
+titleTemplate: Documentation Hub
 
 hero:
   name: RoveSoDocs
