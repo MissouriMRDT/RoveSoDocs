@@ -26,6 +26,23 @@ jobs:
         uses: actions/configure-pages@v5
 
       # -------------------------
+      # Build VitePress (root site)
+      # -------------------------
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Node deps
+        run: npm ci
+
+      - name: Build VitePress into dist/
+        run: |
+          npm run docs:build
+          mkdir -p dist
+          rsync -a docs/.vitepress/dist/ dist/
+
+      # -------------------------
       # Build RoveSoSimulator (Jekyll)
       # -------------------------
       - name: Checkout RoveSoSimulator (Jekyll)
@@ -112,30 +129,6 @@ jobs:
             echo "ERROR: Could not find Doxygen HTML output folder."
             exit 1
           fi
-
-      # -------------------------
-      # Root landing page + safety
-      # -------------------------
-      - name: Create landing page
-        run: |
-          mkdir -p dist
-          cat > dist/index.html <<'HTML'
-          <!doctype html>
-          <html>
-          <head>
-            <meta charset="utf-8" />
-            <meta name="viewport" content="width=device-width,initial-scale=1" />
-            <title>MRDT Docs</title>
-          </head>
-          <body>
-            <h1>MRDT Docs</h1>
-            <ul>
-              <li><a href="./RoveSoSimulator/">RoveSoSimulator</a></li>
-              <li><a href="./autonomy/">Autonomy Software</a></li>
-            </ul>
-          </body>
-          </html>
-          HTML
 
       - name: Disable Jekyll processing for the published site
         run: |
