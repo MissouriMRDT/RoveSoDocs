@@ -9,20 +9,20 @@ hero:
   text: Documentation Hub
   tagline: Guides for Today, Tomorrow, and Forever.
   image:
-    src: logo.png
+    src: /logo.png
     alt: VitePress
 
 features:
   - icon: "🛰️"
     title: "RoveSoSimulator"
     details: "Unreal Engine 5 simulation environment for MRDT—testing with realistic scenarios, sensors, and repeatable runs."
-    link: https://docs.themrdt.org/RoveSoSimulator/
+    link: /RoveSoSimulator/
     linkText: "Open Simulator Docs"
 
   - icon: "🤖"
     title: "Autonomy Software"
     details: "C++ rover autonomy stack—setup, architecture, perception + navigation notes, and testing workflows for competition readiness."
-    link: https://docs.themrdt.org/autonomy/
+    link: /autonomy/
     linkText: "Open Autonomy Docs"
 ---
 
