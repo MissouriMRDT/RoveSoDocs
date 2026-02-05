@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: MissouriMRDT/RoveSoSimulator
-          ref: e20696d702b584dd37009a59641662113fbffa19
+          ref: github-pages
           path: src/RoveSoSimulator
           fetch-depth: 1
           token: ${{ secrets.DOCS_BOT_TOKEN || github.token }}
