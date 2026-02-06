@@ -1,37 +1,41 @@
+// tools/build-minisearch-index.mjs
 import fs from "node:fs/promises";
 import path from "node:path";
 import fg from "fast-glob";
 import MiniSearch from "minisearch";
 import * as cheerio from "cheerio";
 
-const DIST_DIR = path.resolve("dist");
-const OUT_DIR = path.join(DIST_DIR, "minisearch");
-const OUT_FILE = path.join(OUT_DIR, "index.json");
+const DIST_DIR = path.resolve(".vitepress/dist");
+const ASSETS_DIR = path.join(DIST_DIR, "assets");
+const CHUNKS_DIR = path.join(ASSETS_DIR, "chunks");
 
 // Tune these to reduce garbage from nav/sidebars (add more as you see fit)
 const STRIP_SELECTORS = [
   // VitePress chrome
-  ".VPNav", ".VPSidebar", ".VPLocalNav",
+  ".VPNav",
+  ".VPSidebar",
+  ".VPLocalNav",
 
   // Doxygen chrome (common)
-  "#top", "#titlearea", "#side-nav", "#nav-tree", ".navpath",
-  "#MSearchSelectWindow", "#MSearchResultsWindow"
+  "#top",
+  "#titlearea",
+  "#side-nav",
+  "#nav-tree",
+  ".navpath",
+  "#MSearchSelectWindow",
+  "#MSearchResultsWindow",
 ];
 
 function fileToUrl(relPath) {
   // Convert dist-relative file path -> clean URL
   // e.g. "autonomy/index.html" => "/autonomy/"
-  //      "RoveSoSimulator/_d/classFoo.html" => "/RoveSoSimulator/_d/classFoo.html"
   let url = "/" + relPath.replaceAll(path.sep, "/");
   if (url.endsWith("/index.html")) url = url.slice(0, -"/index.html".length) + "/";
   return url;
 }
 
 function normalizeText(s) {
-  return s
-    .replace(/\s+/g, " ")
-    .replace(/\u00a0/g, " ")
-    .trim();
+  return s.replace(/\s+/g, " ").replace(/\u00a0/g, " ").trim();
 }
 
 function sectionFromUrl(url) {
@@ -41,22 +45,99 @@ function sectionFromUrl(url) {
   return "Docs Hub";
 }
 
+async function dirExists(p) {
+  try {
+    const st = await fs.stat(p);
+    return st.isDirectory();
+  } catch {
+    return false;
+  }
+}
+
+async function findLocalSearchIndexChunkFiles() {
+  // Your observed example: @localSearchIndexroot.MJNdQY7M.js
+  // We search in preferred order:
+  //   1) dist/assets/chunks (if it exists)
+  //   2) dist/assets
+  //   3) dist (last resort)
+  const roots = [];
+  if (await dirExists(CHUNKS_DIR)) roots.push(CHUNKS_DIR);
+  if (await dirExists(ASSETS_DIR)) roots.push(ASSETS_DIR);
+  roots.push(DIST_DIR);
+
+  const patterns = [
+    // exact-ish matches for what you showed
+    "**/*@localSearchIndexroot*.js",
+    "**/*@localSearchIndexroot*.mjs",
+    "**/*_@localSearchIndexroot*.js",
+    "**/*_@localSearchIndexroot*.mjs",
+
+    // fallback if naming changes slightly
+    "**/*@localSearchIndex*.js",
+    "**/*@localSearchIndex*.mjs",
+    "**/*_@localSearchIndex*.js",
+    "**/*_@localSearchIndex*.mjs",
+  ];
+
+  for (const root of roots) {
+    const matches = await fg(patterns, {
+      cwd: root,
+      onlyFiles: true,
+      dot: true,
+      absolute: true,
+      caseSensitiveMatch: false,
+      unique: true,
+    });
+
+    if (matches.length) {
+      // Prefer the "...Indexroot..." file(s) if both sets matched
+      const preferred = matches.filter((p) =>
+        /localSearchIndexroot/i.test(path.basename(p))
+      );
+      return preferred.length ? preferred : matches;
+    }
+  }
+
+  // Debug dump: show some JS we *do* have in dist/assets (if any)
+  const jsInAssets = (await dirExists(ASSETS_DIR))
+    ? await fg(["**/*.js", "**/*.mjs"], {
+        cwd: ASSETS_DIR,
+        onlyFiles: true,
+        dot: true,
+        caseSensitiveMatch: false,
+      })
+    : [];
+
+  const preview = jsInAssets.slice(0, 60).map((f) => ` - ${f}`).join("\n");
+
+  throw new Error(
+    `No local search chunk found.\n` +
+      `Searched roots:\n${roots.map((r) => ` - ${r}`).join("\n")}\n` +
+      `Tried patterns:\n${patterns.map((p) => ` - ${p}`).join("\n")}\n\n` +
+      `First ${Math.min(60, jsInAssets.length)} JS files under dist/assets:\n` +
+      (preview || " (none)\n") +
+      `\nIf dist/assets is empty too, your build step isn't producing assets into this dist folder (or hasn't run yet).`
+  );
+}
+
 async function main() {
+  // Index built HTML pages. Ignore dist/assets/** because that’s JS/CSS, not docs content.
   const htmlFiles = await fg(["**/*.html"], {
     cwd: DIST_DIR,
     dot: true,
     onlyFiles: true,
     ignore: [
-      // don’t index your index bundle or random generated search pages
-      "minisearch/**",
+      "assets/**", // don't index JS/CSS bundles
+
+      // don't index search pages
       "**/search*.html",
       "**/search/**",
 
-      // Doxygen can have a bunch of noisy helper pages; optional but helpful:
+      // Doxygen helper pages (optional but helpful)
       "**/navtree*.html",
       "**/menudata*.html",
-      "**/dynsections*.html"
-    ]
+      "**/dynsections*.html",
+    ],
   });
 
   const documents = [];
@@ -69,42 +150,50 @@ async function main() {
     for (const sel of STRIP_SELECTORS) $(sel).remove();
     $("script, style, noscript").remove();
 
-    const title = normalizeText($("title").first().text()) || normalizeText($("h1").first().text()) || rel;
+    const title =
+      normalizeText($("title").first().text()) ||
+      normalizeText($("h1").first().text()) ||
+      rel;
+
     const bodyText = normalizeText($("body").text());
     if (!bodyText) continue;
 
     const url = fileToUrl(rel);
     const section = sectionFromUrl(url);
 
-    // Keep snippets short-ish to keep the serialized index smaller
-    const snippet = bodyText.slice(0, 220);
-
+    // VitePress local search shape: title, titles, text
     documents.push({
-      id: url,          // unique
+      id: url, // IMPORTANT: VitePress local search uses doc IDs like "/path#hash"
       title,
-      content: bodyText,
-      url,
-      section,
-      snippet
+      titles: [section],
+      text: bodyText,
     });
   }
 
-  // Build MiniSearch index
   const miniSearch = new MiniSearch({
     idField: "id",
-    fields: ["title", "content", "section"],
-    storeFields: ["title", "url", "section", "snippet"],
+    fields: ["title", "titles", "text"],
+    storeFields: ["title", "titles"],
   });
 
   miniSearch.addAll(documents);
 
-  await fs.mkdir(OUT_DIR, { recursive: true });
+  // MiniSearch JSON string (what VitePress expects inside the chunk)
+  const serialized = JSON.stringify(miniSearch);
 
-  // IMPORTANT: docs say serialize with JSON.stringify(miniSearch),
-  // and later load with MiniSearch.loadJSON(jsonString, sameOptions). :contentReference[oaicite:3]{index=3}
-  await fs.writeFile(OUT_FILE, JSON.stringify(miniSearch), "utf8");
+  // Wrap like VitePress local-search chunk:
+  // const e='...';export{e as default};
+  // JSON.stringify(serialized) ensures safe JS string escaping.
+  const jsModule = `const e=${JSON.stringify(serialized)};export{e as default};\n`;
 
-  console.log(`Indexed ${documents.length} pages -> ${path.relative(process.cwd(), OUT_FILE)}`);
+  // Find & overwrite the generated local-search chunk(s)
+  const chunkFiles = await findLocalSearchIndexChunkFiles();
+  await Promise.all(chunkFiles.map((f) => fs.writeFile(f, jsModule, "utf8")));
+
+  console.log(
+    `Indexed ${documents.length} pages.\nOverwrote local-search chunk(s):\n` +
+      chunkFiles.map((f) => " - " + path.relative(process.cwd(), f)).join("\n")
+  );
 }
 
 main().catch((e) => {
