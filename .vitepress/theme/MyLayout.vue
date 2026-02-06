@@ -1,21 +1,11 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 const { Layout } = DefaultTheme
-
-onMounted(() => {
-  // Use a global flag that survives the reload
-  if (!(window as any).__notFoundReloaded) {
-    (window as any).__notFoundReloaded = true
-    window.location.reload()
-  }
-})
 </script>
 
 <template>
   <Layout>
     <template #not-found>
-
     </template>
   </Layout>
 </template>
