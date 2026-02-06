@@ -151,9 +151,8 @@ jobs:
         run: |
           touch dist/.nojekyll
 
-      - name: Create Search Index
-        run: |
-          npx pagefind --site dist --output-subdir pagefind
+      - name: Build unified MiniSearch index for dist/
+        run: node tools/build-minisearch-index.mjs
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

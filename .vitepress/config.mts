@@ -17,18 +17,12 @@ export default defineConfig({
     ['link', { rel: 'icon', href: '/logo.png' }],
     ['link', { rel: 'apple-touch-icon', href: '/logo.png' }],
     ['link', { rel: 'mask-icon', href: '/logo.png', color: '#A50303' }],
-    ['link', { rel: 'stylesheet', href: '/pagefind/pagefind-ui.css' }],
-    ['script', { src: '/pagefind/pagefind-ui.js' }]
   ],
 
   // --- Clean URLs for Nicer Paths ---
   cleanUrls: true,
 
   themeConfig: {
-
-    nav: [
-      { text: 'Search', link: '/search' },
-    ],
 
     // --- Edit Link for Collaboration ---
     editLink: {
