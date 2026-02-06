@@ -16,18 +16,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  # -------------------------
+  # 1) Build VitePress hub (root)
+  # -------------------------
+  build_hub:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout docs hub
         uses: actions/checkout@v4
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      # -------------------------
-      # Build VitePress (root site)
-      # -------------------------
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -36,15 +33,25 @@ jobs:
       - name: Install Node deps
         run: npm ci
 
-      - name: Build VitePress into dist/
+      - name: Build VitePress into out/
         run: |
+          set -euo pipefail
           npm run docs:build
-          mkdir -p dist
-          rsync -a .vitepress/dist/ dist/
+          mkdir -p out
+          rsync -a .vitepress/dist/ out/
 
-      # -------------------------
-      # Build RoveSoSimulator (Jekyll)
-      # -------------------------
+      - name: Upload hub artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hub-out
+          path: out
+
+  # -------------------------
+  # 2) Build RoveSoSimulator (Jekyll)
+  # -------------------------
+  build_rovesosim_jekyll:
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout RoveSoSimulator (Jekyll)
         uses: actions/checkout@v4
         with:
@@ -67,51 +74,68 @@ jobs:
           BUNDLE_WITHOUT: "development:test"
         run: |
           set -euo pipefail
-
-          # Ensure nothing from a previous run is reused
           rm -rf .bundle vendor/bundle Gemfile.lock
-
           gem --version
           bundler --version || gem install bundler
-
-          # Force a clean, local install each run (no shared cache)
           bundle config set --local path 'vendor/bundle'
           bundle config set --local clean 'true'
           bundle config set --local without 'development:test'
-
           bundle install --jobs 4 --retry 3
 
-      - name: Build RoveSoSimulator site
+      - name: Build RoveSoSimulator site into out/
         working-directory: src/RoveSoSimulator
         env:
           JEKYLL_ENV: production
           PAGES_REPO_NWO: MissouriMRDT/RoveSoSimulator
           JEKYLL_GITHUB_TOKEN: ${{ secrets.DOCS_BOT_TOKEN || github.token }}
         run: |
+          set -euo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/out/RoveSoSimulator/_j"
           bundle exec jekyll build \
             --baseurl "/RoveSoSimulator/_j" \
-            -d "$GITHUB_WORKSPACE/dist/RoveSoSimulator/_j"
+            -d "$GITHUB_WORKSPACE/out/RoveSoSimulator/_j"
 
-      # -------------------------
-      # Build RoveSoSimulator (Doxygen) - prebuilt, just copy
-      # -------------------------
-      - name: Stage RoveSoSimulator Doxygen into hub dist
+      - name: Upload simulator jekyll artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sim-jekyll-out
+          path: out
+
+  # -------------------------
+  # 3) Stage RoveSoSimulator (Doxygen) from .static in hub repo
+  # -------------------------
+  stage_rovesosim_doxygen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout docs hub (for .static/)
+        uses: actions/checkout@v4
+
+      - name: Stage RoveSoSimulator Doxygen into out/
         run: |
           set -euo pipefail
-          mkdir -p dist/RoveSoSimulator/_d
+          mkdir -p out/RoveSoSimulator/_d
 
           if [ -d ".static/RoveSoSimulatorDoxygen/html" ]; then
-            rsync -a ".static/RoveSoSimulatorDoxygen/html/" "dist/RoveSoSimulator/_d/"
+            rsync -a ".static/RoveSoSimulatorDoxygen/html/" "out/RoveSoSimulator/_d/"
           elif [ -d ".static/RoveSoSimulatorDoxygen" ]; then
-            rsync -a ".static/RoveSoSimulatorDoxygen/" "dist/RoveSoSimulator/_d/"
+            rsync -a ".static/RoveSoSimulatorDoxygen/" "out/RoveSoSimulator/_d/"
           else
             echo "ERROR: Could not find Doxygen HTML output folder."
             exit 1
           fi
 
-      # -------------------------
-      # Build Autonomy_Software (Doxygen)
-      # -------------------------
+      - name: Upload simulator doxygen artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sim-doxygen-out
+          path: out
+
+  # -------------------------
+  # 4) Build Autonomy_Software (Doxygen)
+  # -------------------------
+  build_autonomy_doxygen:
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout Autonomy_Software (Doxygen)
         uses: actions/checkout@v4
         with:
@@ -121,42 +145,84 @@ jobs:
           submodules: recursive
           token: ${{ secrets.DOCS_BOT_TOKEN || github.token }}
 
-      - name: Install Doxygen + Graphviz
+      - name: Install Doxygen + Graphviz + rsync
         run: |
           sudo apt-get update
           sudo apt-get install -y doxygen graphviz rsync
 
       - name: Run Doxygen
         working-directory: src/Autonomy_Software
-        run: |
-          doxygen ./Doxyfile
+        run: doxygen ./Doxyfile
 
-      - name: Stage Autonomy docs into hub dist
+      - name: Stage Autonomy docs into out/
         run: |
           set -euo pipefail
-          mkdir -p dist/autonomy
+          mkdir -p out/autonomy
 
           if [ -d "src/Autonomy_Software/docs/Doxygen/html" ]; then
-            rsync -a "src/Autonomy_Software/docs/Doxygen/html/" "dist/autonomy/"
+            rsync -a "src/Autonomy_Software/docs/Doxygen/html/" "out/autonomy/"
           elif [ -d "src/Autonomy_Software/docs/Doxygen" ]; then
-            rsync -a "src/Autonomy_Software/docs/Doxygen/" "dist/autonomy/"
+            rsync -a "src/Autonomy_Software/docs/Doxygen/" "out/autonomy/"
           elif [ -d "src/Autonomy_Software/html" ]; then
-            rsync -a "src/Autonomy_Software/html/" "dist/autonomy/"
+            rsync -a "src/Autonomy_Software/html/" "out/autonomy/"
           else
             echo "ERROR: Could not find Doxygen HTML output folder."
             exit 1
           fi
 
-      - name: Disable Jekyll processing for the published site
+      - name: Upload autonomy doxygen artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: autonomy-out
+          path: out
+
+  # -------------------------
+  # 5) Assemble + Search + 404 patch + Publish artifact
+  # -------------------------
+  assemble:
+    runs-on: ubuntu-latest
+    needs:
+      - build_hub
+      - build_rovesosim_jekyll
+      - stage_rovesosim_doxygen
+      - build_autonomy_doxygen
+
+    steps:
+      - name: Checkout docs hub
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Node deps
+        run: npm ci
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: parts
+
+      - name: Merge artifacts into dist/
         run: |
+          set -euo pipefail
+          mkdir -p dist
+
+          # Base first (hub), then overlay sub-sites
+          rsync -a "parts/hub-out/" dist/
+          rsync -a "parts/sim-jekyll-out/" dist/
+          rsync -a "parts/sim-doxygen-out/" dist/
+          rsync -a "parts/autonomy-out/" dist/
+
+          # GitHub Pages: disable Jekyll processing
           touch dist/.nojekyll
 
       - name: Build unified MiniSearch index for dist/
         run: node tools/build-minisearch-index.mjs
-
-      - name: Replace 404 Page
-        run: |
-          cp .static/root/404.html dist/404.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
@@ -164,7 +230,7 @@ jobs:
           path: dist
 
   deploy:
-    needs: build
+    needs: assemble
     runs-on: ubuntu-latest
     environment:
       name: github-pages
