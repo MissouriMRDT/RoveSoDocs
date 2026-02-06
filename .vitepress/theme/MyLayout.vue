@@ -3,21 +3,13 @@ import { onMounted } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 const { Layout } = DefaultTheme
 
+// Module-level flag that persists across component remounts but resets on page reload
+let hasReloaded = false
+
 onMounted(() => {
-  // Check if we've already reloaded by looking for a URL parameter
-  const urlParams = new URLSearchParams(window.location.search)
-  const hasReloaded = urlParams.has('_reloaded')
-  
   if (!hasReloaded) {
-    // Add the parameter and reload
-    const newUrl = new URL(window.location.href)
-    newUrl.searchParams.set('_reloaded', '1')
-    window.location.href = newUrl.toString()
-  } else {
-    // Remove the parameter from the URL without reloading
-    const newUrl = new URL(window.location.href)
-    newUrl.searchParams.delete('_reloaded')
-    window.history.replaceState({}, '', newUrl.toString())
+    hasReloaded = true
+    window.location.reload()
   }
 })
 </script>
