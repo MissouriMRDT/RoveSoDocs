@@ -3,12 +3,10 @@ import { onMounted } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 const { Layout } = DefaultTheme
 
-// Module-level flag that persists across component remounts but resets on page reload
-let hasReloaded = false
-
 onMounted(() => {
-  if (!hasReloaded) {
-    hasReloaded = true
+  // Use a global flag that survives the reload
+  if (!(window as any).__notFoundReloaded) {
+    (window as any).__notFoundReloaded = true
     window.location.reload()
   }
 })
