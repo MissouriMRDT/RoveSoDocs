@@ -4,16 +4,20 @@ import DefaultTheme from 'vitepress/theme'
 const { Layout } = DefaultTheme
 
 onMounted(() => {
-  // Check if we've already reloaded for this 404
-  const hasReloaded = sessionStorage.getItem('404-reloaded')
+  // Check if we've already reloaded by looking for a URL parameter
+  const urlParams = new URLSearchParams(window.location.search)
+  const hasReloaded = urlParams.has('_reloaded')
   
   if (!hasReloaded) {
-    // Mark that we've reloaded and reload the page
-    sessionStorage.setItem('404-reloaded', 'true')
-    window.location.reload()
+    // Add the parameter and reload
+    const newUrl = new URL(window.location.href)
+    newUrl.searchParams.set('_reloaded', '1')
+    window.location.href = newUrl.toString()
   } else {
-    // Clear the flag so future 404s can reload again
-    sessionStorage.removeItem('404-reloaded')
+    // Remove the parameter from the URL without reloading
+    const newUrl = new URL(window.location.href)
+    newUrl.searchParams.delete('_reloaded')
+    window.history.replaceState({}, '', newUrl.toString())
   }
 })
 </script>
