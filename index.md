@@ -14,16 +14,23 @@ hero:
 
 features:
   - icon: "🛰️"
-    title: "RoveSoSimulator"
+    title: "RoveSoSimulator (Jekyll)"
     details: "Unreal Engine 5 simulation environment for MRDT—testing with realistic scenarios, sensors, and repeatable runs."
-    link: /RoveSoSimulator/
+    link: /RoveSoSimulator/_j/
+    linkText: "Open Simulator Docs"
+
+  - icon: "🛰️"
+    title: "RoveSoSimulator (Doxygen)"
+    details: "Unreal Engine 5 simulation environment for MRDT—testing with realistic scenarios, sensors, and repeatable runs."
+    link: /RoveSoSimulator/_d/
     linkText: "Open Simulator Docs"
 
   - icon: "🤖"
-    title: "Autonomy Software"
+    title: "Autonomy Software (Doxygen)"
     details: "C++ rover autonomy stack—setup, architecture, perception + navigation notes, and testing workflows for competition readiness."
     link: /autonomy/
     linkText: "Open Autonomy Docs"
+    
 ---
 
 <style>
