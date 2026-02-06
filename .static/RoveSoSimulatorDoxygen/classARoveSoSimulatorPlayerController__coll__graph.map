@@ -1,0 +1,14 @@
+<map id="ARoveSoSimulatorPlayerController" name="ARoveSoSimulatorPlayerController">
+<area shape="rect" id="Node000001" title=" " alt="" coords="129,168,377,193"/>
+<area shape="rect" id="Node000005" href="$classURoveSoSimulatorUIManager.html" title=" " alt="" coords="5,256,220,281"/>
+<area shape="poly" id="edge6_Node000005_Node000001" title=" " alt="" coords="157,199,128,208,111,219,107,227,106,236,110,255,105,256,101,237,102,226,107,216,126,203,156,194"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="126,80,262,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,115,247,166,242,169,207,118"/>
+<area shape="rect" id="Node000003" href="$classURoveSoSimulatorInstance.html" title=" " alt="" coords="287,80,485,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="358,115,272,170,269,165,355,111"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="323,5,449,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="389,45,389,80,383,80,383,45"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="187,249,222,230,237,212,246,192,251,195,241,215,225,234,189,254"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="30,168,105,193"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="77,205,88,231,105,254,100,257,84,233,72,207"/>
+</map>
