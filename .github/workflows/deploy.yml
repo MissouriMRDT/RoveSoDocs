@@ -154,6 +154,10 @@ jobs:
       - name: Build unified MiniSearch index for dist/
         run: node tools/build-minisearch-index.mjs
 
+      - name: Replace 404 Page
+        run: |
+          cp .static/root/404.html dist/404.html
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
