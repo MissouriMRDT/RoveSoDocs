@@ -24,6 +24,14 @@ export default defineConfig({
 
   themeConfig: {
 
+    notFound: {
+      code: '404',
+      title: 'Page Not Found',
+      quote: 'Looks like this page got lost somewhere on Mars.',
+      linkLabel: 'Go back to RoveSoDocs home',
+      linkText: 'Back to Home'
+    },
+
     // --- Edit Link for Collaboration ---
     editLink: {
       pattern: 'https://github.com/MissouriMRDT/RoveSoDocs/edit/development/:path', // Adjust 'main' if your default branch is different
