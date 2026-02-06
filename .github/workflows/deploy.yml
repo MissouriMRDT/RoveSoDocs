@@ -89,8 +89,25 @@ jobs:
           JEKYLL_GITHUB_TOKEN: ${{ secrets.DOCS_BOT_TOKEN || github.token }}
         run: |
           bundle exec jekyll build \
-            --baseurl "/RoveSoSimulator" \
-            -d "$GITHUB_WORKSPACE/dist/RoveSoSimulator"
+            --baseurl "/RoveSoSimulator/_j" \
+            -d "$GITHUB_WORKSPACE/dist/RoveSoSimulator/_j"
+
+      # -------------------------
+      # Build RoveSoSimulator (Doxygen) - prebuilt, just copy
+      # -------------------------
+      - name: Stage RoveSoSimulator Doxygen into hub dist
+        run: |
+          set -euo pipefail
+          mkdir -p dist/RoveSoSimulator/_d
+
+          if [ -d ".static/RoveSoSimulatorDoxygen/html" ]; then
+            rsync -a ".static/RoveSoSimulatorDoxygen/html/" "dist/RoveSoSimulator/_d/"
+          elif [ -d ".static/RoveSoSimulatorDoxygen" ]; then
+            rsync -a ".static/RoveSoSimulatorDoxygen/" "dist/RoveSoSimulator/_d/"
+          else
+            echo "ERROR: Could not find Doxygen HTML output folder."
+            exit 1
+          fi
 
       # -------------------------
       # Build Autonomy_Software (Doxygen)
