@@ -5,7 +5,7 @@ import fg from "fast-glob";
 import MiniSearch from "minisearch";
 import * as cheerio from "cheerio";
 
-const DIST_DIR = path.resolve(".vitepress/dist");
+const DIST_DIR = path.resolve("dist");
 const ASSETS_DIR = path.join(DIST_DIR, "assets");
 const CHUNKS_DIR = path.join(ASSETS_DIR, "chunks");
 
