@@ -104,7 +104,7 @@ jobs:
   # -------------------------
   # 3) Stage RoveSoSimulator (Doxygen) from .static in hub repo
   # -------------------------
-  stage_rovesosim_doxygen:
+  build_rovesosim_doxygen:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout docs hub (for .static/)
@@ -234,7 +234,7 @@ jobs:
     needs:
       - build_hub
       - build_rovesosim_jekyll
-      - stage_rovesosim_doxygen
+      - build_rovesosim_doxygen
       - build_autonomy_doxygen
       - build_embedded_doxygen
 
