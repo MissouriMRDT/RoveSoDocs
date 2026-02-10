@@ -177,7 +177,57 @@ jobs:
           path: out
 
   # -------------------------
-  # 5) Assemble + Search + 404 patch + Publish artifact
+  # 5) Build Embedded_Docs (Doxygen)
+  # -------------------------
+  build_embedded_doxygen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Embedded_Docs (Doxygen)
+        uses: actions/checkout@v4
+        with:
+          repository: MissouriMRDT/Embedded_Docs
+          path: src/Embedded_Docs
+          fetch-depth: 1
+          submodules: recursive
+          token: ${{ secrets.DOCS_BOT_TOKEN || github.token }}
+
+      - name: Install Doxygen + Graphviz + rsync
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz rsync
+
+      - name: Run Doxygen
+        working-directory: src/Embedded_Docs/docs/Doxygen
+        run: doxygen ./Doxyfile
+
+      - name: Build Sphinx
+        run: |
+          cd src/Embedded_Docs/docs/Sphinx
+          python -m venv .
+          source bin/activate
+          pip install -r requirements.txt
+          make html
+
+      - name: Stage Embedded docs into out/
+        run: |
+          set -euo pipefail
+          mkdir -p out/embedded
+
+          if [ -d "src/Embedded_Docs/docs/Sphinx/build/html" ]; then
+            rsync -a "src/Embedded_Docs/docs/Sphinx/build/html/" "out/embedded/"
+          else
+            echo "ERROR: Could not find Doxygen HTML output folder."
+            exit 1
+          fi
+
+      - name: Upload embedded doxygen artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: embedded-out
+          path: out
+
+  # -------------------------
+  # 6) Assemble + Search + 404 patch + Publish artifact
   # -------------------------
   assemble:
     runs-on: ubuntu-latest
@@ -186,6 +236,7 @@ jobs:
       - build_rovesosim_jekyll
       - stage_rovesosim_doxygen
       - build_autonomy_doxygen
+      - build_embedded_doxygen
 
     steps:
       - name: Checkout docs hub
@@ -217,6 +268,7 @@ jobs:
           rsync -a "parts/sim-jekyll-out/" dist/
           rsync -a "parts/sim-doxygen-out/" dist/
           rsync -a "parts/autonomy-out/" dist/
+          rsync -a "parts/embedded-out/" dist/
 
           # GitHub Pages: disable Jekyll processing
           touch dist/.nojekyll
