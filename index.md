@@ -13,6 +13,18 @@ hero:
     alt: VitePress
 
 features:
+  - icon: "🤖"
+    title: "Autonomy Software (Doxygen)"
+    details: "C++ rover autonomy stack—setup, architecture, perception + navigation notes, and testing workflows for competition readiness."
+    link: /autonomy/
+    linkText: "Open Autonomy Docs"
+    
+  - icon: "🔋"
+    title: "Embedded Docs (Doxygen)"
+    details: "Embedded rover firmware stack—setup, API docs, hardware bring-up, framework tutorials, tips + best practices for reliable competition-ready embedded code."
+    link: /embedded/
+    linkText: "Open Embedded Docs"
+
   - icon: "🛰️"
     title: "RoveSoSimulator (Jekyll)"
     details: "Unreal Engine 5 simulation environment for MRDT—testing with realistic scenarios, sensors, and repeatable runs."
@@ -24,12 +36,6 @@ features:
     details: "Unreal Engine 5 simulation environment for MRDT—testing with realistic scenarios, sensors, and repeatable runs."
     link: /RoveSoSimulator/_d/
     linkText: "Open Simulator Docs"
-
-  - icon: "🤖"
-    title: "Autonomy Software (Doxygen)"
-    details: "C++ rover autonomy stack—setup, architecture, perception + navigation notes, and testing workflows for competition readiness."
-    link: /autonomy/
-    linkText: "Open Autonomy Docs"
     
 ---
 
