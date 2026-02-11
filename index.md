@@ -25,6 +25,12 @@ features:
     link: /embedded/
     linkText: "Open Embedded Docs"
 
+  - icon: "📡"
+    title: "RoveComm C++ (Doxygen)"
+    details: "RoveComm C++ networking interface for MRDT high-level systems—API reference, source, and resources. Not intended for microcontrollers."
+    link: /RoveComm/_cpp/
+    linkText: "Open RoveComm C++ Docs"
+
   - icon: "🛰️"
     title: "RoveSoSimulator (Jekyll)"
     details: "Unreal Engine 5 simulation environment for MRDT—testing with realistic scenarios, sensors, and repeatable runs."
@@ -86,8 +92,9 @@ html.dark {
 }
 
 /* Always 2 columns for the homepage feature cards (except small screens) */
-.VPHome .VPFeatures {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.VPHome .VPFeatures,
+.VPHome .VPFeatures .items {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
 }
 
 /* On phones, switch to 1 column */
