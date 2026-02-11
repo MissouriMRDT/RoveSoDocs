@@ -85,10 +85,15 @@ html.dark {
   }
 }
 
-/* Force features to 2 columns on larger screens (2x2 for 4 cards) */
-@media (min-width: 960px) {
+/* Always 2 columns for the homepage feature cards (except small screens) */
+.VPHome .VPFeatures {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* On phones, switch to 1 column */
+@media (max-width: 639px) {
   .VPHome .VPFeatures {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 }
 </style>
