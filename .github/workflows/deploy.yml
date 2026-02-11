@@ -227,6 +227,52 @@ jobs:
           path: out
 
   # -------------------------
+  # 6) Build RoveComm C++ (Doxygen)
+  # -------------------------
+  build_rovecommcpp_doxygen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout RoveComm C++ (Doxygen)
+        uses: actions/checkout@v4
+        with:
+          repository: MissouriMRDT/RoveComm_CPP
+          path: src/RoveComm_CPP
+          fetch-depth: 1
+          submodules: recursive
+          token: ${{ secrets.DOCS_BOT_TOKEN || github.token }}
+
+      - name: Install Doxygen + Graphviz + rsync
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz rsync
+
+      - name: Run Doxygen
+        working-directory: src/RoveComm_CPP
+        run: doxygen ./Doxyfile
+
+      - name: Stage RoveComm_CPP docs into out/
+        run: |
+          set -euo pipefail
+          mkdir -p out/rovecomm/_cpp
+
+          if [ -d "src/RoveComm_CPP/docs/Doxygen/html" ]; then
+            rsync -a "src/RoveComm_CPP/docs/Doxygen/html/" "out/rovecomm/_cpp/"
+          elif [ -d "src/RoveComm_CPP/docs/Doxygen" ]; then
+            rsync -a "src/RoveComm_CPP/docs/Doxygen/" "out/rovecomm/_cpp/"
+          elif [ -d "src/RoveComm_CPP/html" ]; then
+            rsync -a "src/RoveComm_CPP/html/" "out/rovecomm/_cpp/"
+          else
+            echo "ERROR: Could not find Doxygen HTML output folder."
+            exit 1
+          fi
+
+      - name: Upload RoveComm_CPP doxygen artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rc-cpp-out
+          path: out
+
+  # -------------------------
   # 6) Assemble + Search + 404 patch + Publish artifact
   # -------------------------
   assemble:
@@ -237,6 +283,7 @@ jobs:
       - build_rovesosim_doxygen
       - build_autonomy_doxygen
       - build_embedded_doxygen
+      - build_rovecommcpp_doxygen
 
     steps:
       - name: Checkout docs hub
@@ -269,6 +316,7 @@ jobs:
           rsync -a "parts/sim-doxygen-out/" dist/
           rsync -a "parts/autonomy-out/" dist/
           rsync -a "parts/embedded-out/" dist/
+          rsync -a "parts/rc-cpp-out/" dist/
 
           # GitHub Pages: disable Jekyll processing
           touch dist/.nojekyll
