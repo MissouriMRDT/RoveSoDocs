@@ -84,4 +84,11 @@ html.dark {
     --vp-home-hero-image-filter: blur(68px);
   }
 }
+
+/* Force features to 2 columns on larger screens (2x2 for 4 cards) */
+@media (min-width: 960px) {
+  .VPHome .VPFeatures {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 </style>
