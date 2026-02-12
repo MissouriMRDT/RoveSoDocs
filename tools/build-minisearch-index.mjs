@@ -9,7 +9,6 @@ const DIST_DIR = path.resolve("dist");
 const ASSETS_DIR = path.join(DIST_DIR, "assets");
 const CHUNKS_DIR = path.join(ASSETS_DIR, "chunks");
 
-// Tune these to reduce garbage from nav/sidebars (add more as you see fit)
 const STRIP_SELECTORS = [
   // VitePress chrome
   ".VPNav",
@@ -42,6 +41,8 @@ function sectionFromUrl(url) {
   if (url.startsWith("/autonomy/")) return "Autonomy (Doxygen)";
   if (url.startsWith("/RoveSoSimulator/_d/")) return "RoveSoSimulator (Doxygen)";
   if (url.startsWith("/RoveSoSimulator/_j/")) return "RoveSoSimulator (Jekyll)";
+  if (url.startsWith("/embedded/")) return "Embedded Docs (Doxygen)";
+  if (url.startsWith("RoveComm/_cpp/")) return "RoveComm C++ (Doxygen)";
   return "Docs Hub";
 }
 
@@ -55,8 +56,8 @@ async function dirExists(p) {
 }
 
 async function findLocalSearchIndexChunkFiles() {
-  // Your observed example: @localSearchIndexroot.MJNdQY7M.js
-  // We search in preferred order:
+  // Should be located somewhere in dist. It will be named similar to: @localSearchIndexroot.MJNdQY7M.js
+  // Search in preferred order:
   //   1) dist/assets/chunks (if it exists)
   //   2) dist/assets
   //   3) dist (last resort)
