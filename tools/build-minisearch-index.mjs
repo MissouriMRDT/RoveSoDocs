@@ -42,7 +42,7 @@ function sectionFromUrl(url) {
   if (url.startsWith("/RoveSoSimulator/_d/")) return "RoveSoSimulator (Doxygen)";
   if (url.startsWith("/RoveSoSimulator/_j/")) return "RoveSoSimulator (Jekyll)";
   if (url.startsWith("/embedded/")) return "Embedded Docs (Doxygen)";
-  if (url.startsWith("RoveComm/_cpp/")) return "RoveComm C++ (Doxygen)";
+  if (url.startsWith("/rovecomm/_cpp/")) return "RoveComm C++ (Doxygen)";
   return "Docs Hub";
 }
 
