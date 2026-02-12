@@ -24,6 +24,10 @@ export default defineConfig({
 
   themeConfig: {
 
+    nav: [
+      { text: 'Autonomy', link: '/autonomy/', target: '_self' },
+    ],
+
     notFound: {
       code: '404',
       title: 'Page Not Found',
