@@ -31,7 +31,6 @@ function fileToUrl(relPath) {
   let url = "/" + relPath.replaceAll(path.sep, "/");
   if (url.endsWith("/index.html"))
     url = url.slice(0, -"/index.html".length) + "/";
-  url = "https://docs.themrdt.org" + url;
   return url;
 }
 
