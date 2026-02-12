@@ -91,16 +91,16 @@ html.dark {
   }
 }
 
-/* Always 2 columns for the homepage feature cards (except small screens) */
-.VPHome .VPFeatures,
-.VPHome .VPFeatures .items {
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+/* Always 3 columns for the homepage feature cards (except small screens) */
+@media (min-width: 1400px) {
+    .item.grid-4[data-v-b1eea84a] {
+        width: 33%;
+    }
 }
-
-/* On phones, switch to 1 column */
-@media (max-width: 639px) {
-  .VPHome .VPFeatures {
-    grid-template-columns: 1fr;
-  }
+  
+@media (min-width: 960px) {
+    .item.grid-4[data-v-b1eea84a] {
+        width: 50%;
+    }
 }
 </style>
