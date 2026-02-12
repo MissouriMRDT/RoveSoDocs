@@ -24,17 +24,17 @@ export default defineConfig({
 
   themeConfig: {
 
-    nav: [
-      { text: 'Autonomy', link: '/autonomy/', target: '_self' },
-    ],
+    // nav: [
+    //   { text: 'Autonomy', link: '/autonomy/', target: '_self' },
+    // ],
 
-    notFound: {
-      code: '404',
-      title: 'Page Not Found',
-      quote: 'Looks like this page got lost somewhere on Mars.',
-      linkLabel: 'Go back to RoveSoDocs home',
-      linkText: 'Back to Home'
-    },
+    // notFound: {
+    //   code: '404',
+    //   title: 'Page Not Found',
+    //   quote: 'Looks like this page got lost somewhere on Mars.',
+    //   linkLabel: 'Go back to RoveSoDocs home',
+    //   linkText: 'Back to Home'
+    // },
 
     // --- Edit Link for Collaboration ---
     editLink: {
