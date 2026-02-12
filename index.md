@@ -28,7 +28,7 @@ features:
   - icon: "📡"
     title: "RoveComm C++ (Doxygen)"
     details: "RoveComm C++ networking interface for MRDT high-level systems—API reference, source, and resources. Not intended for microcontrollers."
-    link: /RoveComm/_cpp/
+    link: /rovecomm/_cpp/
     linkText: "Open RoveComm C++ Docs"
 
   - icon: "🛰️"
