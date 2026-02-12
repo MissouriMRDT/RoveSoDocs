@@ -29,17 +29,23 @@ function fileToUrl(relPath) {
   // Convert dist-relative file path -> clean URL
   // e.g. "autonomy/index.html" => "/autonomy/"
   let url = "/" + relPath.replaceAll(path.sep, "/");
-  if (url.endsWith("/index.html")) url = url.slice(0, -"/index.html".length) + "/";
+  if (url.endsWith("/index.html"))
+    url = url.slice(0, -"/index.html".length) + "/";
+  url = "https://docs.themrdt.org" + url;
   return url;
 }
 
 function normalizeText(s) {
-  return s.replace(/\s+/g, " ").replace(/\u00a0/g, " ").trim();
+  return s
+    .replace(/\s+/g, " ")
+    .replace(/\u00a0/g, " ")
+    .trim();
 }
 
 function sectionFromUrl(url) {
   if (url.startsWith("/autonomy/")) return "Autonomy (Doxygen)";
-  if (url.startsWith("/RoveSoSimulator/_d/")) return "RoveSoSimulator (Doxygen)";
+  if (url.startsWith("/RoveSoSimulator/_d/"))
+    return "RoveSoSimulator (Doxygen)";
   if (url.startsWith("/RoveSoSimulator/_j/")) return "RoveSoSimulator (Jekyll)";
   if (url.startsWith("/embedded/")) return "Embedded Docs (Doxygen)";
   if (url.startsWith("/rovecomm/_cpp/")) return "RoveComm C++ (Doxygen)";
@@ -93,7 +99,7 @@ async function findLocalSearchIndexChunkFiles() {
     if (matches.length) {
       // Prefer the "...Indexroot..." file(s) if both sets matched
       const preferred = matches.filter((p) =>
-        /localSearchIndexroot/i.test(path.basename(p))
+        /localSearchIndexroot/i.test(path.basename(p)),
       );
       return preferred.length ? preferred : matches;
     }
@@ -109,7 +115,10 @@ async function findLocalSearchIndexChunkFiles() {
       })
     : [];
 
-  const preview = jsInAssets.slice(0, 60).map((f) => ` - ${f}`).join("\n");
+  const preview = jsInAssets
+    .slice(0, 60)
+    .map((f) => ` - ${f}`)
+    .join("\n");
 
   throw new Error(
     `No local search chunk found.\n` +
@@ -117,7 +126,7 @@ async function findLocalSearchIndexChunkFiles() {
       `Tried patterns:\n${patterns.map((p) => ` - ${p}`).join("\n")}\n\n` +
       `First ${Math.min(60, jsInAssets.length)} JS files under dist/assets:\n` +
       (preview || " (none)\n") +
-      `\nIf dist/assets is empty too, your build step isn't producing assets into this dist folder (or hasn't run yet).`
+      `\nIf dist/assets is empty too, your build step isn't producing assets into this dist folder (or hasn't run yet).`,
   );
 }
 
@@ -175,7 +184,7 @@ async function writeDebugRedirectPage(chunkFiles) {
       document.getElementById("primaryLink").href = primary;
       document.getElementById("primaryLink").textContent = primary;
 
-      const all = ${JSON.stringify(all.map(x => x.web))};
+      const all = ${JSON.stringify(all.map((x) => x.web))};
       const ul = document.getElementById("allLinks");
       for (const w of all) {
         const a = document.createElement("a");
@@ -215,7 +224,7 @@ async function main() {
       "_debug/**",
       "**/_debug/**",
       "_debug.html",
-      
+
       // don't index search pages
       "**/search*.html",
       "**/search/**",
@@ -281,7 +290,7 @@ async function main() {
 
   console.log(
     `Indexed ${documents.length} pages.\nOverwrote local-search chunk(s):\n` +
-      chunkFiles.map((f) => " - " + path.relative(process.cwd(), f)).join("\n")
+      chunkFiles.map((f) => " - " + path.relative(process.cwd(), f)).join("\n"),
   );
 }
 
