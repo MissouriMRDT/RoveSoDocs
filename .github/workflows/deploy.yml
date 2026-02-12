@@ -338,8 +338,8 @@ jobs:
           # GitHub Pages: disable Jekyll processing
           touch dist/.nojekyll
 
-      - name: Build unified MiniSearch index for dist/
-        run: node tools/build-minisearch-index.mjs
+      # - name: Build unified MiniSearch index for dist/
+      #   run: node tools/build-minisearch-index.mjs
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
