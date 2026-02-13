@@ -1,20 +1,11 @@
 <map id="USimHUDWidget" name="USimHUDWidget">
-<area shape="rect" id="Node000001" title=" " alt="" coords="33,243,166,268"/>
-<area shape="rect" id="Node000002" href="$classUUIWidget.html" title=" " alt="" coords="53,168,145,193"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,208,102,242,97,242,97,208"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,80,113,105"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="73,117,96,166,91,169,68,119"/>
-<area shape="rect" id="Node000004" href="$classURoveSoSimulatorUIManager.html" title=" " alt="" coords="137,80,352,105"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="168,112,132,131,116,150,106,169,101,167,112,147,128,127,165,107"/>
-<area shape="rect" id="Node000006" href="$classARoveSoSimulatorPlayerController.html" title=" " alt="" coords="282,168,530,193"/>
-<area shape="poly" id="edge9_Node000006_Node000004" title=" " alt="" coords="233,118,230,131,233,142,256,156,295,165,293,171,254,161,229,146,224,132,227,117"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="207,5,282,31"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="247,45,247,80,242,80,242,45"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="370,164,337,146,311,132,266,108,269,103,314,127,339,142,372,159"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="403,80,539,105"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="468,120,455,146,428,170,424,166,451,142,463,118"/>
-<area shape="rect" id="Node000008" href="$classURoveSoSimulatorInstance.html" title=" " alt="" coords="564,80,763,105"/>
-<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="617,112,441,170,440,165,615,107"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="600,5,727,31"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="666,45,666,80,661,80,661,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="14,260,146,288"/>
+<area shape="rect" id="Node000002" href="$classUUIWidget.html" title="Abstract class which represents a UI Screen." alt="" coords="35,183,126,211"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,224,83,261,78,259,78,228"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,82,113,110"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="66,123,80,182,75,182,64,128"/>
+<area shape="rect" id="Node000004" href="$classURoveSoSimulatorUIManager.html" title="Manager which handles all UI elements through UIWidgets and private state." alt="" coords="137,82,352,110"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="209,121,104,185,101,180,211,116"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="208,5,281,33"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="246,46,247,83,242,81,243,51"/>
 </map>

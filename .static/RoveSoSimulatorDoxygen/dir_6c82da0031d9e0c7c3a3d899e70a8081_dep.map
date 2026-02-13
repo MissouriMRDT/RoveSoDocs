@@ -1,8 +1,9 @@
 <map id="Source/RoveSoSimulator/Private" name="Source/RoveSoSimulator/Private">
-<area shape="rect" id="node2" href="dir_e58fb84c1cb4cf9fbf7a08f17c307374.html" title="Components" alt="" coords="301,63,405,88"/>
-<area shape="rect" id="node3" href="dir_ec1748bbaf9d4e91b90ed27279dddd56.html" title="Core" alt="" coords="225,63,277,88"/>
-<area shape="rect" id="node4" href="dir_a5d33dcdc755daef9515adcae9566c19.html" title="RoveComm" alt="" coords="101,63,200,88"/>
-<area shape="rect" id="node5" href="dir_cca6097e83094027f352b3afa6de2d00.html" title="UI" alt="" coords="38,63,77,88"/>
-<area shape="rect" id="clust2" href="dir_6c82da0031d9e0c7c3a3d899e70a8081.html" alt="" coords="27,52,509,99"/>
-<area shape="rect" id="clust1" href="dir_4e2ab35fd2eb63f98c43c2373353fdcb.html" title="RoveSoSimulator" alt="" coords="16,16,520,109"/>
+<area shape="rect" id="node2" href="dir_e58fb84c1cb4cf9fbf7a08f17c307374.html" title="Components" alt="" coords="128,65,232,93"/>
+<area shape="rect" id="node3" href="dir_ec1748bbaf9d4e91b90ed27279dddd56.html" title="Core" alt="" coords="256,65,307,93"/>
+<area shape="rect" id="node4" href="dir_a5d33dcdc755daef9515adcae9566c19.html" title="RoveComm" alt="" coords="331,65,429,93"/>
+<area shape="rect" id="node5" href="dir_c4745165476f799fa4f3d7784a1495f6.html" title="Rovers" alt="" coords="452,65,518,93"/>
+<area shape="rect" id="node6" href="dir_cca6097e83094027f352b3afa6de2d00.html" title="UI" alt="" coords="542,65,581,93"/>
+<area shape="rect" id="clust2" href="dir_6c82da0031d9e0c7c3a3d899e70a8081.html" alt="" coords="27,54,591,103"/>
+<area shape="rect" id="clust1" href="dir_4e2ab35fd2eb63f98c43c2373353fdcb.html" title="RoveSoSimulator" alt="" coords="16,16,601,114"/>
 </map>

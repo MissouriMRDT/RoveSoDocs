@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,141,31"/>
-<area shape="rect" id="Node000001" href="$classARoveSoSimulatorPlayerController.html" title=" " alt="" coords="189,5,437,31"/>
-<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="155,15,189,15,189,21,155,21"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,70,33"/>
+<area shape="rect" id="Node000001" href="$classARoverArmPawn.html" title="Custom base class for Arm BP&#39;s to inherit from, which attaches to the InputManager." alt="" coords="118,5,247,33"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="85,17,120,19,115,20,85,22"/>
 </map>

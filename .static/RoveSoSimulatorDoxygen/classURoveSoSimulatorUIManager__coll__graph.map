@@ -1,14 +1,5 @@
 <map id="URoveSoSimulatorUIManager" name="URoveSoSimulatorUIManager">
-<area shape="rect" id="Node000001" title=" " alt="" coords="389,80,603,105"/>
-<area shape="rect" id="Node000003" href="$classARoveSoSimulatorPlayerController.html" title=" " alt="" coords="185,168,433,193"/>
-<area shape="poly" id="edge6_Node000003_Node000001" title=" " alt="" coords="424,112,372,132,344,150,322,170,319,166,341,146,369,127,422,107"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="459,5,533,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="499,45,499,80,493,80,493,45"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="403,162,451,142,472,124,487,104,491,107,476,127,453,146,405,167"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="5,80,141,105"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="119,108,279,165,277,170,117,113"/>
-<area shape="rect" id="Node000005" href="$classURoveSoSimulatorInstance.html" title=" " alt="" coords="166,80,365,105"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="280,117,306,166,301,169,275,119"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="202,5,329,31"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="268,45,268,80,263,80,263,45"/>
+<area shape="rect" id="Node000001" title="Manager which handles all UI elements through UIWidgets and private state." alt="" coords="5,81,220,109"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="76,5,149,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,47,115,82,110,79,111,51"/>
 </map>

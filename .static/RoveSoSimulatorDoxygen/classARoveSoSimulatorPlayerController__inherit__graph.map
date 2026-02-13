@@ -1,5 +1,5 @@
 <map id="ARoveSoSimulatorPlayerController" name="ARoveSoSimulatorPlayerController">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,253,104"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="61,5,197,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="132,44,132,79,127,79,127,44"/>
+<area shape="rect" id="Node000001" title="Player controller which possesses the active rover, UI &amp; Input Managers, and input state." alt="" coords="5,81,253,109"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="61,5,197,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,47,131,82,127,79,127,51"/>
 </map>

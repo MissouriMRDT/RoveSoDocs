@@ -1,0 +1,5 @@
+<map id="ARoverArmPawn" name="ARoverArmPawn">
+<area shape="rect" id="Node000001" title="Custom base class for Arm BP&#39;s to inherit from, which attaches to the InputManager." alt="" coords="5,81,135,109"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="38,5,102,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,47,73,81,67,80,68,51"/>
+</map>

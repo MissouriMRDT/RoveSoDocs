@@ -1,0 +1,5 @@
+<map id="URoveSoSimulatorInputManager" name="URoveSoSimulatorInputManager">
+<area shape="rect" id="Node000001" title="Manager class which collects all input callbacks into one location and allows any piece of code to at..." alt="" coords="5,81,239,109"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="85,5,159,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,47,124,82,120,79,120,51"/>
+</map>

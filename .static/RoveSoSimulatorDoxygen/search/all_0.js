@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['arovervehiclepawn_0',['ARoverVehiclePawn',['../classARoverVehiclePawn.html',1,'']]],
-  ['arovesosimulatorplayercontroller_1',['ARoveSoSimulatorPlayerController',['../classARoveSoSimulatorPlayerController.html',1,'']]]
+  ['aroverarmpawn_0',['ARoverArmPawn',['../classARoverArmPawn.html',1,'']]],
+  ['arovervehiclepawn_1',['ARoverVehiclePawn',['../classARoverVehiclePawn.html',1,'']]],
+  ['arovesosimulatorplayercontroller_2',['ARoveSoSimulatorPlayerController',['../classARoveSoSimulatorPlayerController.html',1,'']]]
 ];

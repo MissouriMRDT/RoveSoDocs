@@ -1,3 +1,15 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classflag__class.html" title="A class to facilitate checking that member functions of different types have been successfully submit..." alt="" coords="5,5,92,31"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,136,79,164"/>
+<area shape="rect" id="Node000001" href="$classURoveCommManifestWrapper.html" title="Blueprint&#45;friendly wrapper for the RoveComm Manifest." alt="" coords="134,5,353,33"/>
+<area shape="poly" id="edge7_Node000000_Node000001" title=" " alt="" coords="56,121,84,81,103,60,125,44,154,32,150,36,128,48,107,64,89,84,60,124"/>
+<area shape="rect" id="Node000002" href="$classURoveCommPacketWrapper.html" title="Blueprint&#45;friendly wrapper for RoveCommPacket." alt="" coords="141,57,346,85"/>
+<area shape="poly" id="edge8_Node000000_Node000002" title=" " alt="" coords="73,125,126,95,165,84,161,87,128,100,76,129"/>
+<area shape="rect" id="Node000003" href="$classURoveCommTCPWrapper.html" title="Blueprintable wrapper class for RoveCommTCP to allow usage in Unreal Engine Blueprints." alt="" coords="150,109,336,137"/>
+<area shape="poly" id="edge9_Node000000_Node000003" title=" " alt="" coords="93,141,152,134,148,137,95,145"/>
+<area shape="rect" id="Node000004" href="$classURoveCommUDPWrapper.html" title="Blueprintable wrapper class for RoveCommUDP to allow usage in Unreal Engine Blueprints." alt="" coords="148,161,338,189"/>
+<area shape="poly" id="edge10_Node000000_Node000004" title=" " alt="" coords="94,154,150,162,146,165,95,159"/>
+<area shape="rect" id="Node000005" href="$classURoveSoSimulatorInputManager.html" title="Manager class which collects all input callbacks into one location and allows any piece of code to at..." alt="" coords="127,213,360,241"/>
+<area shape="poly" id="edge11_Node000000_Node000005" title=" " alt="" coords="76,170,128,198,167,212,161,213,126,203,75,175"/>
+<area shape="rect" id="Node000006" href="$classURoveSoSimulatorUIManager.html" title="Manager which handles all UI elements through UIWidgets and private state." alt="" coords="136,265,350,293"/>
+<area shape="poly" id="edge12_Node000000_Node000006" title=" " alt="" coords="59,174,89,215,107,234,128,250,155,265,150,265,125,255,104,238,85,218,57,179"/>
 </map>

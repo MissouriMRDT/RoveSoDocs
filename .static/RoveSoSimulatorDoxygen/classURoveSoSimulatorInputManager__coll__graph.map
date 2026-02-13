@@ -1,0 +1,15 @@
+<map id="URoveSoSimulatorInputManager" name="URoveSoSimulatorInputManager">
+<area shape="rect" id="Node000001" title="Manager class which collects all input callbacks into one location and allows any piece of code to at..." alt="" coords="176,207,410,234"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="158,106,231,134"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,142,282,206,277,206,216,147"/>
+<area shape="rect" id="Node000003" href="$structFActions.html" title=" " alt="" coords="255,106,330,134"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="295,148,295,207,291,205,291,151"/>
+<area shape="rect" id="Node000004" href="$structFInputActionsUniversal.html" title=" " alt="" coords="5,5,178,33"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="132,37,219,80,268,105,263,106,216,84,132,43"/>
+<area shape="rect" id="Node000005" href="$structFInputActionsRoverDrive.html" title=" " alt="" coords="201,5,384,33"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="294,47,295,106,290,104,291,51"/>
+<area shape="rect" id="Node000006" href="$structFInputActionsArm.html" title=" " alt="" coords="408,5,546,33"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="448,41,381,84,329,108,327,103,378,80,443,43"/>
+<area shape="rect" id="Node000007" href="$structFInputMappingContexts.html" title=" " alt="" coords="354,106,530,134"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="414,142,356,185,317,209,315,204,353,180,409,144"/>
+</map>
