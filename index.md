@@ -15,9 +15,15 @@ hero:
 features:
   - icon: "🤖"
     title: "Autonomy Software (Doxygen)"
-    details: "C++ rover autonomy stack—setup, architecture, perception + navigation notes, and testing workflows for competition readiness."
-    link: /autonomy/
+    details: "C++ rover autonomy stack—API reference, class interfaces, and low-level code documentation."
+    link: /autonomy/_d/
     linkText: "Open Autonomy Docs"
+
+  - icon: "📖"
+    title: "Autonomy Software (Binder)"
+    details: "High-level autonomy operations manual & architecture guide—subsystem deep dives, state machine, tuning guide, and vision pipelines."
+    link: /autonomy/_j/
+    linkText: "Open Autonomy Binder"
     
   - icon: "🔋"
     title: "Embedded Docs (Doxygen)"

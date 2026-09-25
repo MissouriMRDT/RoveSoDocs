@@ -5,6 +5,8 @@ import { useData } from 'vitepress'
 const { site } = useData()
 
 const REFRESH_PREFIXES = [
+  '/autonomy/_d/',
+  '/autonomy/_j/',
   '/autonomy/',
   '/RoveSoSimulator/_d/',
   '/RoveSoSimulator/_j/',
@@ -48,7 +50,8 @@ const sectionHref = computed(() => {
 const quickLinks = computed(() => {
   const b = base.value === '/' ? '' : base.value.replace(/\/$/, '')
   return [
-    { label: 'Autonomy Docs', href: b + '/autonomy/' },
+    { label: 'Autonomy Software (Doxygen)', href: b + '/autonomy/_d/' },
+    { label: 'Autonomy Software (Binder)', href: b + '/autonomy/_j/' },
     { label: 'RoveSoSimulator (Doxygen)', href: b + '/RoveSoSimulator/_d/' },
     { label: 'RoveSoSimulator (Jekyll)', href: b + '/RoveSoSimulator/_j/' },
     { label: 'Embedded', href: b + '/embedded/' },

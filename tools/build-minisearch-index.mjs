@@ -42,7 +42,9 @@ function normalizeText(s) {
 }
 
 function sectionFromUrl(url) {
-  if (url.startsWith("/autonomy/")) return "Autonomy (Doxygen)";
+  if (url.startsWith("/autonomy/_d/")) return "Autonomy Software (Doxygen)";
+  if (url.startsWith("/autonomy/_j/")) return "Autonomy Software (Binder)";
+  if (url.startsWith("/autonomy/")) return "Autonomy Software";
   if (url.startsWith("/RoveSoSimulator/_d/"))
     return "RoveSoSimulator (Doxygen)";
   if (url.startsWith("/RoveSoSimulator/_j/")) return "RoveSoSimulator (Jekyll)";

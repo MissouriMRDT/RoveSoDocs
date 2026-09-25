@@ -131,7 +131,63 @@ jobs:
           path: out
 
   # -------------------------
-  # 4) Build Autonomy_Software (Doxygen)
+  # 4) Build Autonomy Software (Jekyll)
+  # -------------------------
+  build_autonomy_jekyll:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Autonomy_Software (Jekyll)
+        uses: actions/checkout@v4
+        with:
+          repository: MissouriMRDT/Autonomy_Software
+          ref: docs/autonomy-binder
+          path: src/Autonomy_Software
+          fetch-depth: 1
+          submodules: false
+          token: ${{ secrets.DOCS_BOT_TOKEN || github.token }}
+
+      - name: Setup Ruby (for Jekyll) - no cache
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2.4"
+          bundler-cache: false
+          working-directory: src/Autonomy_Software/docs/autonomy_binder
+
+      - name: Install gems (fresh, no cache)
+        working-directory: src/Autonomy_Software/docs/autonomy_binder
+        env:
+          BUNDLE_WITHOUT: "development:test"
+        run: |
+          set -euo pipefail
+          rm -rf .bundle vendor/bundle Gemfile.lock
+          gem --version
+          bundler --version || gem install bundler
+          bundle config set --local path 'vendor/bundle'
+          bundle config set --local clean 'true'
+          bundle config set --local without 'development:test'
+          bundle install --jobs 4 --retry 3
+
+      - name: Build Autonomy Binder site into out/
+        working-directory: src/Autonomy_Software/docs/autonomy_binder
+        env:
+          JEKYLL_ENV: production
+          PAGES_REPO_NWO: MissouriMRDT/Autonomy_Software
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.DOCS_BOT_TOKEN || github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/out/autonomy/_j"
+          bundle exec jekyll build \
+            --baseurl "/autonomy/_j" \
+            -d "$GITHUB_WORKSPACE/out/autonomy/_j"
+
+      - name: Upload autonomy jekyll artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: autonomy-jekyll-out
+          path: out
+
+  # -------------------------
+  # 5) Build Autonomy_Software (Doxygen)
   # -------------------------
   build_autonomy_doxygen:
     runs-on: ubuntu-latest
@@ -174,14 +230,14 @@ jobs:
       - name: Stage Autonomy docs into out/
         run: |
           set -euo pipefail
-          mkdir -p out/autonomy
+          mkdir -p out/autonomy/_d
 
           if [ -d "src/Autonomy_Software/docs/Doxygen/html" ]; then
-            rsync -a "src/Autonomy_Software/docs/Doxygen/html/" "out/autonomy/"
+            rsync -a "src/Autonomy_Software/docs/Doxygen/html/" "out/autonomy/_d/"
           elif [ -d "src/Autonomy_Software/docs/Doxygen" ]; then
-            rsync -a "src/Autonomy_Software/docs/Doxygen/" "out/autonomy/"
+            rsync -a "src/Autonomy_Software/docs/Doxygen/" "out/autonomy/_d/"
           elif [ -d "src/Autonomy_Software/html" ]; then
-            rsync -a "src/Autonomy_Software/html/" "out/autonomy/"
+            rsync -a "src/Autonomy_Software/html/" "out/autonomy/_d/"
           else
             echo "ERROR: Could not find Doxygen HTML output folder."
             exit 1
@@ -190,7 +246,7 @@ jobs:
       - name: Upload autonomy doxygen artifact
         uses: actions/upload-artifact@v4
         with:
-          name: autonomy-out
+          name: autonomy-doxygen-out
           path: out
 
   # -------------------------
@@ -298,6 +354,7 @@ jobs:
       - build_hub
       - build_rovesosim_jekyll
       - build_rovesosim_doxygen
+      - build_autonomy_jekyll
       - build_autonomy_doxygen
       - build_embedded_doxygen
       - build_rovecommcpp_doxygen
@@ -331,7 +388,8 @@ jobs:
           rsync -a "parts/hub-out/" dist/
           rsync -a "parts/sim-jekyll-out/" dist/
           rsync -a "parts/sim-doxygen-out/" dist/
-          rsync -a "parts/autonomy-out/" dist/
+          rsync -a "parts/autonomy-jekyll-out/" dist/
+          rsync -a "parts/autonomy-doxygen-out/" dist/
           rsync -a "parts/embedded-out/" dist/
           rsync -a "parts/rc-cpp-out/" dist/
 
