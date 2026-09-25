@@ -177,6 +177,7 @@ jobs:
           set -euo pipefail
           mkdir -p "$GITHUB_WORKSPACE/out/autonomy/_j"
           bundle exec jekyll build \
+            --trace \
             --baseurl "/autonomy/_j" \
             -d "$GITHUB_WORKSPACE/out/autonomy/_j"
 
