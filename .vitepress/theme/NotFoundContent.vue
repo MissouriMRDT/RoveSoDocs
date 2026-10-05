@@ -12,6 +12,8 @@ const REFRESH_PREFIXES = [
   '/RoveSoSimulator/_j/',
   '/embedded/',
   '/rovecomm/_cpp/',
+  '/rovecomm/_j/',
+  '/rovecomm/',
 ]
 
 const REFRESH_FLAG = '__vp_r'
@@ -56,6 +58,7 @@ const quickLinks = computed(() => {
     { label: 'RoveSoSimulator (Jekyll)', href: b + '/RoveSoSimulator/_j/' },
     { label: 'Embedded', href: b + '/embedded/' },
     { label: 'RoveComm C++', href: b + '/rovecomm/_cpp/' },
+    { label: 'RoveComm Guide', href: b + '/rovecomm/_j/' },
   ]
 })
 

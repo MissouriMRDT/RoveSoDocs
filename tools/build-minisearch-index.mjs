@@ -50,6 +50,8 @@ function sectionFromUrl(url) {
   if (url.startsWith("/RoveSoSimulator/_j/")) return "RoveSoSimulator (Jekyll)";
   if (url.startsWith("/embedded/")) return "Embedded Docs (Doxygen)";
   if (url.startsWith("/rovecomm/_cpp/")) return "RoveComm C++ (Doxygen)";
+  if (url.startsWith("/rovecomm/_j/")) return "RoveComm Protocol Guide";
+  if (url.startsWith("/rovecomm/")) return "RoveComm";
   return "Docs Hub";
 }
 

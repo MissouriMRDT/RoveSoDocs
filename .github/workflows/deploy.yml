@@ -301,7 +301,64 @@ jobs:
           path: out
 
   # -------------------------
-  # 6) Build RoveComm C++ (Doxygen)
+  # 6) Build RoveComm Base (Jekyll Guide)
+  # -------------------------
+  build_rovecomm_jekyll:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout RoveComm Base (Jekyll)
+        uses: actions/checkout@v4
+        with:
+          repository: MissouriMRDT/RoveComm_Base
+          ref: docs/rovecomm
+          path: src/RoveComm_Base
+          fetch-depth: 1
+          submodules: false
+          token: ${{ secrets.DOCS_BOT_TOKEN || github.token }}
+
+      - name: Setup Ruby (for Jekyll) - no cache
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2.4"
+          bundler-cache: false
+          working-directory: src/RoveComm_Base/docs
+
+      - name: Install gems (fresh, no cache)
+        working-directory: src/RoveComm_Base/docs
+        env:
+          BUNDLE_WITHOUT: "development:test"
+        run: |
+          set -euo pipefail
+          rm -rf .bundle vendor/bundle Gemfile.lock
+          gem --version
+          bundler --version || gem install bundler
+          bundle config set --local path 'vendor/bundle'
+          bundle config set --local clean 'true'
+          bundle config set --local without 'development:test'
+          bundle install --jobs 4 --retry 3
+
+      - name: Build RoveComm Guide site into out/
+        working-directory: src/RoveComm_Base/docs
+        env:
+          JEKYLL_ENV: production
+          PAGES_REPO_NWO: MissouriMRDT/RoveComm_Base
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.DOCS_BOT_TOKEN || github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/out/rovecomm/_j"
+          bundle exec jekyll build \
+            --trace \
+            --baseurl "/rovecomm/_j" \
+            -d "$GITHUB_WORKSPACE/out/rovecomm/_j"
+
+      - name: Upload rovecomm jekyll artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rovecomm-jekyll-out
+          path: out
+
+  # -------------------------
+  # 7) Build RoveComm C++ (Doxygen)
   # -------------------------
   build_rovecommcpp_doxygen:
     runs-on: ubuntu-latest
@@ -347,7 +404,7 @@ jobs:
           path: out
 
   # -------------------------
-  # 6) Assemble + Search + 404 patch + Publish artifact
+  # 8) Assemble + Search + 404 patch + Publish artifact
   # -------------------------
   assemble:
     runs-on: ubuntu-latest
@@ -358,6 +415,7 @@ jobs:
       - build_autonomy_jekyll
       - build_autonomy_doxygen
       - build_embedded_doxygen
+      - build_rovecomm_jekyll
       - build_rovecommcpp_doxygen
 
     steps:
@@ -392,6 +450,7 @@ jobs:
           rsync -a "parts/autonomy-jekyll-out/" dist/
           rsync -a "parts/autonomy-doxygen-out/" dist/
           rsync -a "parts/embedded-out/" dist/
+          rsync -a "parts/rovecomm-jekyll-out/" dist/
           rsync -a "parts/rc-cpp-out/" dist/
 
           # GitHub Pages: disable Jekyll processing

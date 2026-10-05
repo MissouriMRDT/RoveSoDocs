@@ -37,6 +37,12 @@ features:
     link: /rovecomm/_cpp/
     linkText: "Open RoveComm C++ Docs"
 
+  - icon: "📖"
+    title: "RoveComm Protocol (Binder)"
+    details: "Universal rover communications manual—wire format specifications, manifest ecosystem, multi-language bindings, and diagnostic tester tooling."
+    link: /rovecomm/_j/
+    linkText: "Open RoveComm Guide"
+
   - icon: "🛰️"
     title: "RoveSoSimulator (Jekyll)"
     details: "Unreal Engine 5 simulation environment for MRDT—testing with realistic scenarios, sensors, and repeatable runs."
