@@ -64,7 +64,7 @@ jobs:
       - name: Setup Ruby (for Jekyll) - no cache
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.2.4"
+          ruby-version: "3.2"
           bundler-cache: false
           working-directory: src/RoveSoSimulator
 
@@ -149,7 +149,7 @@ jobs:
       - name: Setup Ruby (for Jekyll) - no cache
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.2.4"
+          ruby-version: "3.2"
           bundler-cache: false
           working-directory: src/Autonomy_Software/docs/autonomy_binder
 
@@ -319,7 +319,7 @@ jobs:
       - name: Setup Ruby (for Jekyll) - no cache
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.2.4"
+          ruby-version: "3.2"
           bundler-cache: false
           working-directory: src/RoveComm_Base/docs
 
